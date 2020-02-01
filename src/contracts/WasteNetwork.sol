@@ -5,6 +5,7 @@ contract WasteNetwork {
     uint public postCount = 0; //To count the number of posts
     mapping(uint => Post) public posts;  //key value store that enables torage of data into the blockchain
     //'posts' is the mapping
+    
     struct Post {
         uint id;
         string content; //General content of type of waster

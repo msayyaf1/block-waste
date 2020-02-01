@@ -40,12 +40,26 @@ contract('WasteNetwork', ([deployer, poster , worker1, worker2, collector]) => {
       const event = result.logs[0].args
       assert.equal(event.id.toNumber(), postCount.toNumber(), 'id is correct')
       assert.equal(event.content, 'This is the first test post', 'content is correct')
-      // assert.equal(event.location, '0', 'tip amount is correct')
       assert.equal(event.poster, poster, 'the posted person is correct')
       assert.equal(event.worker, 0x0000000000000000000000000000000000000000,'Worker ADDRESS TEST')
+      
       // FAILURE: Post must have content
       await wasteNetwork.createPost('', { from: poster }).should.be.rejected;
     })
 
+    it('lists posts', async () => {
+      const post = await wasteNetwork.posts(postCount)
+      assert.equal(post.id.toNumber(), postCount.toNumber(), 'id is correct')
+      assert.equal(post.content, 'This is the first test post', 'content is correct')
+      assert.equal(post.poster, poster, 'the posted person is correct')
+      assert.equal(post.worker, 0x0000000000000000000000000000000000000000,'Worker ADDRESS TEST')
+      
+
+
+
+    })
+
+    
+
   })
-})
+}) 
