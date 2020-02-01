@@ -11,23 +11,31 @@ contract WasteNetwork {
         string content; //General content of type of waster
         address payable poster; //address of person who created the post
         address payable worker; // address of the person who claims that specific post -- null default
+        uint payamt;
     }
     event PostCreated(
         uint id,
         string content,
         address payable poster,
-        address payable worker
+        address payable worker,
+        uint payamt
     );
 
     event claimPost(
         uint id,
         string content,
-        uint tipAmount,
         address payable poster,
-        address payable worker
+        address payable worker,
+        uint payamt
     );
 
-
+    event Collecting(
+        uint id,
+        string content,
+        address payable poster,
+        address payable worker,
+        uint payamt
+    );
 
     constructor() public {
         name = "Waste Manager Network";
@@ -38,9 +46,9 @@ contract WasteNetwork {
         require(bytes(_content).length > 0);
         postCount ++; //Incrementing the post count
         // Create the post 
-        posts[postCount] = Post(postCount, _content, msg.sender,0x0000000000000000000000000000000000000000);
+        posts[postCount] = Post(postCount, _content, msg.sender,0x0000000000000000000000000000000000000000, 0);
         // Triggering events
-        emit PostCreated(postCount, _content, msg.sender,0x0000000000000000000000000000000000000000);
+        emit PostCreated(postCount, _content, msg.sender,0x0000000000000000000000000000000000000000, 0;
 
     }
     //Function for claiming a waste listing
@@ -66,6 +74,23 @@ contract WasteNetwork {
         emit claimPost(id, content, tipAmount, poster, worker);(postCount, _post.content, _post.tipAmount, _author);
 
     }
+
+
+      function payCollection(uint _id) public payable {
+        // Fetch the worker
+        address payable _worker = _post.worker;
+        // Pay the worker by sending them Ether
+        address(_worker).transfer(msg.value);
+        // Increment the tip amount
+        _post.payamt = _post.payamt + msg.value;
+        // Update the post
+        posts[_id] = _post;
+        // Trigger an event
+        emit PostTipped(postCount, _post.content, _poster, _worker, _post.payamt);
+    }
+
+
+
 
 
 }

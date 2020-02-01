@@ -42,7 +42,7 @@ contract('WasteNetwork', ([deployer, poster, worker1, collector]) => {
       assert.equal(event.content, 'This is the first test post', 'content is correct')
       assert.equal(event.poster, poster, 'the posted person is correct')
       assert.equal(event.worker, 0x0000000000000000000000000000000000000000,'Worker ADDRESS TEST')
-      
+      assert.equal(event.payamt, '0', 'pay amount is correct')
       // FAILURE: Post must have content
       await wasteNetwork.createPost('', { from: poster }).should.be.rejected;
     })
@@ -53,7 +53,7 @@ contract('WasteNetwork', ([deployer, poster, worker1, collector]) => {
       assert.equal(post.content, 'This is the first test post', 'content is correct')
       assert.equal(post.poster, poster, 'the posted person is correct')
       assert.equal(post.worker, 0x0000000000000000000000000000000000000000,'Worker ADDRESS TEST')
-      
+      assert.equal(event.payamt, '0', 'pay amount is correct')
     })
 
     it('Allow workers to claim the posts' , async() => {
@@ -63,13 +63,44 @@ contract('WasteNetwork', ([deployer, poster, worker1, collector]) => {
 
 
 
+    })
+
+    it('Transferring rewards to workers' , async () => {
+      //Track  old worker balance before reward
+      let oldWorkerBalance
+      oldWorkerBalance = await web3.eth.getBalance(worker)
+      oldWorkerBalance = new web3.utils.BN(oldWorkerBalance)
+
+      result = await wasteNetwork.payCollection(postCount, { from: collector, value: web3.utils.toWei('1', 'Ether') })
+
+      // SUCCESS
+      const event = result.logs[0].args
+      assert.equal(event.id.toNumber(), postCount.toNumber(), 'id is correct')
+      assert.equal(event.content, 'This is my first post', 'content is correct')
+      assert.equal(event.poster, poster, 'the posted person is correct')
+      assert.equal(event.payamt, '1000000000000000000', 'tip amount is correct')
+      
+      // Check that worker received funds
+      let newWorkerBalance
+      newWorkerBalance = await web3.eth.getBalance(worker)
+      newWorkerBalance = new web3.utils.BN(newWorkerBalance)
+
+      let payamt
+      payamt = web3.utils.toWei('1', 'Ether')
+      payamt = new web3.utils.BN(payamt)
+
+      const expectBalance = oldWorkerBalance.add(payamt)
+
+      assert.equal(newWorkerBalance.toString(), expectBalance.toString())
+
+
+
 
 
 
 
 
     })
-
     
 
     
