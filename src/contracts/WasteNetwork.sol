@@ -16,7 +16,8 @@ contract WasteNetwork {
         uint id,
         string content,
         string location,
-        address payable poster
+        address payable poster,
+        worker: address(0)
     );
 
 
@@ -25,12 +26,14 @@ contract WasteNetwork {
     }
      
     function createPost (string memory _content) public {
-
+        // Require that post be non empty
+        require(bytes(_content).length > 0);
         postCount ++; //Incrementing the post count
         // Create the post 
         posts[postCount] = Post(postCount, _content, _location, msg.sender);
         // Triggering events
         emit PostCreated(postCount, _content, _location , msg.sender);
 
-
+    }
+    
 }

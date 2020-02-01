@@ -4,7 +4,7 @@ require('chai')
   .use(require('chai-as-promised'))
   .should()
 
-contract('WasteNetwork', ([deployer, poster , worker1, worker2,]) => {
+contract('WasteNetwork', ([deployer, poster , worker1, worker2, collector]) => {
   let wasteNetwork
   
   before(async () => {
