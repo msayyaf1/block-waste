@@ -4,7 +4,7 @@ require('chai')
   .use(require('chai-as-promised'))
   .should()
 
-contract('WasteNetwork', ([deployer, poster , worker1, worker2, collector]) => {
+contract('WasteNetwork', ([deployer, poster, worker1, collector]) => {
   let wasteNetwork
   
   before(async () => {
@@ -54,10 +54,23 @@ contract('WasteNetwork', ([deployer, poster , worker1, worker2, collector]) => {
       assert.equal(post.poster, poster, 'the posted person is correct')
       assert.equal(post.worker, 0x0000000000000000000000000000000000000000,'Worker ADDRESS TEST')
       
+    })
+
+    it('Allow workers to claim the posts' , async() => {
+      //getting the current user
+      const accounts = await web3.eth.getAccounts()
+      this.currentuser({ account: accounts[0] })
+
+
+
+
+
 
 
 
     })
+
+    
 
     
 
