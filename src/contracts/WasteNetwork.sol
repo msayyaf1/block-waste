@@ -21,18 +21,18 @@ contract WasteNetwork {
         uint payamt
     );
 
-    event claimPost(
+    event ClaimThePost(
         uint id,
         string content,
-        address payable poster,
-        address payable worker,
+        address poster,
+        address worker,
         uint payamt
     );
 
     event Collecting(
         uint id,
         string content,
-        address payable poster,
+        address poster,
         address payable worker,
         uint payamt
     );
@@ -48,11 +48,11 @@ contract WasteNetwork {
         // Create the post 
         posts[postCount] = Post(postCount, _content, msg.sender,0x0000000000000000000000000000000000000000, 0);
         // Triggering events
-        emit PostCreated(postCount, _content, msg.sender,0x0000000000000000000000000000000000000000, 0;
+        emit PostCreated(postCount, _content, msg.sender,0x0000000000000000000000000000000000000000, 0);
 
     }
     //Function for claiming a waste listing
-    function claimPost(uint _id) public payable {
+    function ClaimPost(uint _id) public payable {
         // Make sure the id is valid
         require(_id > 0 && _id <= postCount);
         // Fetching the post and making a copy of to _post
@@ -65,18 +65,25 @@ contract WasteNetwork {
 
         // fetching the worker who is the current loggedin person
         address _worker = _post.worker;
-        // I need to get the address of the worker address who claimed the post
-
+        // get the address of the worker address who claimed the post
+        _post.worker = msg.sender;
+        
 
         //updating the post
         posts[_id] = _post;
         // Trigger the event
-        emit claimPost(id, content, tipAmount, poster, worker);(postCount, _post.content, _post.tipAmount, _author);
+        emit ClaimThePost(postCount, _post.content, _poster, _worker, _post.payamt);
 
     }
 
-
+        //function to verify nad tranfer the amount
       function payCollection(uint _id) public payable {
+        // Fetching the post and making a copy of to _post
+        Post memory _post = posts[_id];
+
+        //fetching the poster address
+        address _poster = _post.poster;
+
         // Fetch the worker
         address payable _worker = _post.worker;
         // Pay the worker by sending them Ether
@@ -86,7 +93,7 @@ contract WasteNetwork {
         // Update the post
         posts[_id] = _post;
         // Trigger an event
-        emit PostTipped(postCount, _post.content, _poster, _worker, _post.payamt);
+        emit Collecting(postCount, _post.content, _poster, _worker, _post.payamt);
     }
 
 

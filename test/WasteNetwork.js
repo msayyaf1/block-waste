@@ -4,7 +4,7 @@ require('chai')
   .use(require('chai-as-promised'))
   .should()
 
-contract('WasteNetwork', ([deployer, poster, worker1, collector]) => {
+contract('WasteNetwork', ([deployer, poster, worker, collector]) => {
   let wasteNetwork
   
   before(async () => {
@@ -53,17 +53,29 @@ contract('WasteNetwork', ([deployer, poster, worker1, collector]) => {
       assert.equal(post.content, 'This is the first test post', 'content is correct')
       assert.equal(post.poster, poster, 'the posted person is correct')
       assert.equal(post.worker, 0x0000000000000000000000000000000000000000,'Worker ADDRESS TEST')
-      assert.equal(event.payamt, '0', 'pay amount is correct')
+      
     })
 
     it('Allow workers to claim the posts' , async() => {
       //getting the current user
-      const accounts = await web3.eth.getAccounts()
-      this.currentuser({ account: accounts[0] })
+      // const accounts = await web3.eth.getAccounts()
+      // const currentuser = accounts[0] 
 
+      result = await wasteNetwork.ClaimPost(postCount, { from: worker })
 
-
+      //SUCCESS
+      const event = result.logs[0].args
+      assert.equal(event.id.toNumber(), postCount.toNumber(), 'id is correct')
+      assert.equal(event.content, 'This is the first test post', 'content is correct')
+      assert.equal(event.poster, poster, 'the posted person is correct')
+      assert.equal(event.worker, 0x0000000000000000000000000000000000000000,'Worker ADDRESS TEST')
+       
     })
+
+
+
+
+
 
     it('Transferring rewards to workers' , async () => {
       //Track  old worker balance before reward
@@ -76,7 +88,7 @@ contract('WasteNetwork', ([deployer, poster, worker1, collector]) => {
       // SUCCESS
       const event = result.logs[0].args
       assert.equal(event.id.toNumber(), postCount.toNumber(), 'id is correct')
-      assert.equal(event.content, 'This is my first post', 'content is correct')
+      assert.equal(event.content, 'This is the first test post', 'content is correct')
       assert.equal(event.poster, poster, 'the posted person is correct')
       assert.equal(event.payamt, '1000000000000000000', 'tip amount is correct')
       
