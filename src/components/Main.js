@@ -21,7 +21,7 @@ class Main extends Component {
                     type="text"
                     ref={(input) => { this.postContent = input }}
                     className="form-control"
-                    placeholder="What's on your mind?"
+                    placeholder="Report Now for a Safer Planet"
                     required />
                 </div>
                 <button type="submit" className="btn btn-primary btn-block">Share</button>
@@ -43,7 +43,7 @@ class Main extends Component {
                       <li className="list-group-item">
                         <p>{post.content}</p>
                       </li>
-                      <li key={key} className="list-group-item py-2">
+                      {/* <li key={key} className="list-group-item py-2">
                         <small className="float-left mt-1 text-muted">
                           TIPS: {window.web3.utils.fromWei(post.tipAmount.toString(), 'Ether')} ETH
                         </small>
@@ -58,7 +58,7 @@ class Main extends Component {
                         >
                           TIP 0.1 ETH
                         </button>
-                      </li>
+                      </li> */}
                     </ul>
                   </div>
                 )

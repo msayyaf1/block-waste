@@ -68,13 +68,18 @@ class App extends Component {
     })
   }
 
-  ClaimPost(id, tipAmount) {
+  ClaimPost(id) {
     this.setState({ loading: true })
     this.state.wasteNetwork.methods.ClaimPost(id).send({ from: this.state.account })
     .once('receipt', (receipt) => {
       this.setState({ loading: false })
     })
   }
+
+
+
+  
+
 
   constructor(props) {
     super(props)
@@ -98,7 +103,7 @@ class App extends Component {
           : <Main
               posts={this.state.posts}
               createPost={this.createPost}
-              tipPost={this.tipPost}
+              ClaimPost={this.ClaimPost}
             />
         }
       </div>

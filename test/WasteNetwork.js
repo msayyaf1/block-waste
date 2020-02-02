@@ -90,7 +90,7 @@ contract('WasteNetwork', ([deployer, poster, worker, collector]) => {
       assert.equal(event.id.toNumber(), postCount.toNumber(), 'id is correct')
       assert.equal(event.content, 'This is the first test post', 'content is correct')
       assert.equal(event.poster, poster, 'the posted person is correct')
-      assert.equal(event.payamt, '1000000000000000000', 'tip amount is correct')
+      assert.equal(event.payamt, '1000000000000000000', 'payment amount is correct')
       
       // Check that worker received funds
       let newWorkerBalance
